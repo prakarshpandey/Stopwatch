@@ -3,6 +3,7 @@ var Stopwatch = React.createClass({
     return {
       milliSecondsElapsed: 0,
       timerStarted: false,
+      laps: [],
     }
   },
 
@@ -25,10 +26,15 @@ var Stopwatch = React.createClass({
 
   handleReset: function(){
     clearInterval(this.incrementer);
-    this.state.timerStarted = false;
-    this.setState({
-      milliSecondsElapsed: 0
-    })
+    this.setState(this.getInitialState);
+  },
+
+  handleLaps: function(){
+    if(this.state.timerStarted){
+      this.setState({
+        laps: this.state.laps.concat([this.timeString()])
+      });
+    }
   },
 
   getMilliSeconds: function(){
@@ -47,18 +53,25 @@ var Stopwatch = React.createClass({
      return Math.floor(totSeconds / 60)
   },
 
+  timeString: function(){
+    var mins = this.getMinutes();
+    var seconds = this.getSeconds();
+    var millis = this.getMilliSeconds();
+    return mins + ':' + seconds + ':' + millis;
+  },
 
   render: function(){
     return(
       <div>
-        <h1>{this.getMinutes()}:{this.getSeconds()}:{this.getMilliSeconds()}</h1>
+        <h1>{this.timeString()}</h1>
         <button type="button" onClick = {this.handleStartClick}>Start</button>
         <button type="button" onClick={this.handleStopClick}>Stop</button>
         <button type="button" onClick={this.handleReset}>Reset</button>
+        <button type="button" onClick={this.handleLaps}>Lap</button>
+        <h1>{this.state.laps}</h1>
       </div>
     );
   },
-
 });
 
 ReactDOM.render(<Stopwatch />, document.body);
