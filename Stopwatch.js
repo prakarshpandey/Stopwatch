@@ -31,19 +31,21 @@ var Stopwatch = React.createClass({
   },
 
   getSeconds: function(){
-    var seconds = '0' + Math.floor(this.state.milliSecondsElapsed / 100);
+    var totSeconds = Math.floor(this.state.milliSecondsElapsed / 100);
+    var seconds = '0' + (totSeconds % 60)
     return seconds.slice(-2);
   },
 
   getMinutes: function(){
-    return Math.floor(this.getSeconds() / 60);
+     var totSeconds = Math.floor(this.state.milliSecondsElapsed / 100);
+     return Math.floor(totSeconds / 60)
   },
 
 
   render: function(){
     return(
       <div>
-        <h1>{this.getMinutes()}:{this.getSeconds()}:{this.getMilliSeconds()}</h1>
+        <h2>{this.getMinutes()}:{this.getSeconds()}:{this.getMilliSeconds()}</h2>
         <button type="button" onClick = {this.handleStartClick}>Start</button>
         <button type="button" onClick={this.handleStopClick}>Stop</button>
         <button type="button" onClick={this.handleReset}>Reset</button>
