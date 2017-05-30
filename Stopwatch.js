@@ -1,25 +1,31 @@
 var Stopwatch = React.createClass({
   getInitialState: function(){
     return {
-      milliSecondsElapsed: 0
+      milliSecondsElapsed: 0,
+      timerStarted: false,
     }
   },
 
   handleStartClick: function(){
    var _this = this;
-   this.incrementer = setInterval(function(){
-     _this.setState({
-       milliSecondsElapsed: (_this.state.milliSecondsElapsed + 1)
-     });
-   }, 10);
+   if(! _this.state.timerStarted){
+     _this.state.timerStarted = true;
+     this.incrementer = setInterval(function(){
+       _this.setState({
+         milliSecondsElapsed: (_this.state.milliSecondsElapsed + 1)
+       });
+     }, 10);
+   }
   },
 
   handleStopClick: function(){
       clearInterval(this.incrementer);
+      this.state.timerStarted = false;
   },
 
   handleReset: function(){
     clearInterval(this.incrementer);
+    this.state.timerStarted = false;
     this.setState({
       milliSecondsElapsed: 0
     })
@@ -45,7 +51,7 @@ var Stopwatch = React.createClass({
   render: function(){
     return(
       <div>
-        <h2>{this.getMinutes()}:{this.getSeconds()}:{this.getMilliSeconds()}</h2>
+        <h1>{this.getMinutes()}:{this.getSeconds()}:{this.getMilliSeconds()}</h1>
         <button type="button" onClick = {this.handleStartClick}>Start</button>
         <button type="button" onClick={this.handleStopClick}>Stop</button>
         <button type="button" onClick={this.handleReset}>Reset</button>
